@@ -3,515 +3,765 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Last Mile X — The autonomy orchestrator for industrial last mile</title>
-<meta name="description" content="LMX is the orchestrator that builds the network for industrial last mile autonomy. Priced per drop. There is no software to buy.">
+<title>LMX — Urgent B2B delivery, run for you. Per drop.</title>
+<meta name="description" content="LMX replaces your in-house delivery operation — drivers, vehicles, dispatch — with one per-drop contract and a delivery window we commit to. Auto parts, MRO, field service, construction and medical supply. Austin, TX.">
+<meta property="og:title" content="LMX — Urgent B2B delivery, run for you. Per drop.">
+<meta property="og:description" content="One price per completed delivery. No software fees. A delivery window we commit to.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 800'%3E%3Crect width='800' height='800' fill='%230c0c0b'/%3E%3Cg transform='translate(120 224.3) scale(0.63205)'%3E%3Cg fill='%23f2f0eb'%3E%3Cpath d='M0 0H62V247H225V303H0Z'/%3E%3Cpath transform='translate(264 0)' d='M0 0H55V303H0Z M252 0H307V303H252Z M48 0H86L178 303H130.5Z M259 0H221L129 303H176.5Z'/%3E%3C/g%3E%3Cpath fill='%230a6644' transform='translate(601 0)' d='M13 0H78L280 303H214Z M206 0H271L70 303H4Z'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Source+Serif+4:opsz,wght@8..60,600&amp;display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  html, body { margin:0; padding:0; background:#FAFAF8; }
-  * { box-sizing:border-box; }
-  a { color:#1F3864; text-decoration:none; }
-  a:hover { color:#1A1A1A; }
-  ::selection { background:#D9D6CE; }
-  :focus-visible { outline:2px solid #1F3864; outline-offset:2px; }
-  @keyframes lmxFade { from { opacity:0 } to { opacity:1 } }
-  @keyframes lmxTape { from { transform:translateX(0) } to { transform:translateX(-50%) } }
-  @keyframes lmxBlink { 0%,60% { opacity:1 } 61%,100% { opacity:0.15 } }
-  .lmx-tape:hover .lmx-tape-track { animation-play-state:paused; }
+  /* ===== LMX brand tokens (from docs/LMX branding + driver-app theme) ===== */
+  :root{
+    --ink:#0c0c0b; --ink-2:#1c1c1b; --text:#1A1A1A; --muted:#6B6B66; --muted-2:#8a857a;
+    --paper:#FAFAF8; --cream:#f2f0eb; --sunk:#f1ede4; --line:#D9D6CE; --line-2:#ece8df;
+    --green:#0a6644; --green-2:#0d7a52; --green-tint:#eef6f0; --green-line:#9ed3b6;
+    --amber:#D97706; --amber-tint:#fdfaec; --danger:#c2492f;
+    --sans:"Archivo",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:"IBM Plex Mono",SFMono-Regular,Menlo,Consolas,monospace;
+    --max:1120px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:var(--sans);color:var(--text);background:var(--paper);line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  svg{max-width:100%}
+  ::selection{background:var(--line)}
+  :focus-visible{outline:2px solid var(--green);outline-offset:2px}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 40px}
+  @media (max-width:640px){.wrap{padding:0 22px}}
+  h1,h2,h3{margin:0;letter-spacing:-0.02em;line-height:1.1;font-weight:600}
+  h1{font-size:clamp(36px,4.6vw,56px);line-height:1.06}
+  h2{font-size:clamp(26px,3vw,34px);line-height:1.18;max-width:720px}
+  h3{font-size:18px;letter-spacing:-0.01em}
+  p{margin:0}
+  .lead{font-size:clamp(17px,1.5vw,19px);color:var(--muted);max-width:620px}
+  .mono{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .kicker{display:block;margin-bottom:18px}
+  .kicker.green{color:var(--green)}
+  .fig{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);line-height:1.8;margin-top:14px}
+  section{padding:96px 0;border-top:1px solid var(--line)}
+  section.flush{border-top:0}
+  @media (max-width:760px){section{padding:64px 0}}
+  .btn{display:inline-flex;align-items:center;gap:10px;padding:13px 20px;font-family:var(--sans);font-weight:600;font-size:15px;border:1.5px solid transparent;cursor:pointer;border-radius:4px;transition:background .12s,color .12s,border-color .12s}
+  .btn-primary{background:var(--ink);color:var(--cream)}
+  .btn-primary:hover{background:var(--green)}
+  .btn-green{background:var(--green);color:#fff}
+  .btn-green:hover{background:var(--green-2)}
+  .btn-ghost{background:transparent;color:var(--text);border-color:var(--line)}
+  .btn-ghost:hover{border-color:var(--text)}
+  .btn-ghost.on-dark{color:var(--cream);border-color:rgba(242,240,235,.3)}
+  .btn-ghost.on-dark:hover{border-color:var(--cream)}
+  .arrow{font-family:var(--mono)}
+
+  /* ===== wordmark ===== */
+  .wm{display:inline-block;height:1em;width:auto;aspect-ratio:886/303;vertical-align:-0.08em}
+  .stamp{display:inline-flex;align-items:center;justify-content:center;background:var(--ink);border-radius:3px;box-shadow:inset 0 0 0 1.5px rgba(242,240,235,.22)}
+
+  /* ===== NAV ===== */
+  header{position:sticky;top:0;z-index:50;background:rgba(250,250,248,.92);backdrop-filter:saturate(140%) blur(10px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:76px;gap:32px}
+  .brand{display:flex;flex-direction:column;gap:5px}
+  .brand .stamp{height:34px;padding:0 12px}
+  .brand .stamp .wm{height:15px}
+  .brand .sub{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .nav-links{display:flex;gap:28px}
+  .nav-links a{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:6px 0;border-bottom:2px solid transparent}
+  .nav-links a:hover{color:var(--text);border-bottom-color:var(--amber)}
+  .nav .btn{padding:10px 16px;font-size:14px}
+  @media (max-width:960px){.nav-links{display:none}}
+
+  /* ===== HERO ===== */
+  .hero{padding:88px 0 0;border-top:0}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:start}
+  @media (max-width:900px){.hero-grid{grid-template-columns:1fr;gap:44px}}
+  .pill{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);margin-bottom:26px}
+  .pill .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px var(--green-tint)}
+  .hero h1 em{font-style:normal;color:var(--green)}
+  .hero .lead{margin-top:24px}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px}
+  .hero-proof{display:grid;grid-template-columns:repeat(3,auto);gap:36px;margin-top:44px;padding-top:26px;border-top:1px solid var(--line)}
+  @media (max-width:520px){.hero-proof{grid-template-columns:1fr 1fr}}
+  .hero-proof b{display:block;font-size:22px;font-weight:600;letter-spacing:-0.02em}
+  .hero-proof span{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+  /* Customer view card — the shop's phone */
+  .device{background:#fff;border:1px solid var(--line);padding:22px 22px 20px;position:relative;max-width:440px;margin-left:auto}
+  @media (max-width:900px){.device{margin:0 auto}}
+  .device .row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .badge{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:5px 9px;background:var(--green-tint);color:var(--green);border:1px solid var(--green-line)}
+  .device h3{font-size:17px;margin-top:10px}
+  .eta{font-size:46px;font-weight:600;letter-spacing:-0.03em;margin:14px 0 0;line-height:1;font-variant-numeric:tabular-nums}
+  .eta small{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-left:10px;font-weight:500}
+  .route{margin:22px 0 8px;height:6px;background:var(--sunk);position:relative;overflow:hidden}
+  .route::after{content:"";position:absolute;left:0;top:0;bottom:0;width:66%;background:var(--green);animation:grow 2.2s ease-out both}
+  @keyframes grow{from{width:10%}to{width:66%}}
+  .stops{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+  .timeline{margin-top:20px;display:grid;gap:11px}
+  .tl{display:flex;gap:12px;align-items:flex-start;font-size:14px}
+  .tl i{flex:none;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:var(--green);color:#fff;font-size:11px;font-style:normal;font-weight:700}
+  .tl i.pending{background:var(--sunk);color:var(--muted)}
+  .tl span{color:var(--muted)}
+  .float{position:absolute;right:-16px;bottom:-20px;background:var(--ink);color:var(--cream);padding:10px 14px;font-size:13px;border:1px solid rgba(242,240,235,.2)}
+  .float b{display:block;font-weight:600}
+  .float .mono{color:rgba(242,240,235,.6);font-size:10.5px}
+  @media (max-width:520px){.float{right:6px}}
+
+  /* Tape — live-style ticker */
+  .tape{margin-top:72px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;background:var(--paper)}
+  .tape-track{display:flex;width:max-content;animation:tape 52s linear infinite}
+  .tape:hover .tape-track{animation-play-state:paused}
+  @keyframes tape{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .tape span{display:inline-flex;align-items:center;gap:14px;padding:14px 28px;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);white-space:nowrap;border-right:1px solid var(--line)}
+  .tape b{color:var(--text);font-weight:500}
+  .tape .ok{color:var(--green)}
+  .tape .amb{color:var(--amber)}
+
+  /* ===== PROBLEM ===== */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+  @media (max-width:900px){.split{grid-template-columns:1fr;gap:40px}}
+  .bill{background:#fff;border:1px solid var(--line);padding:28px}
+  .bill .line{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px dashed var(--line);font-size:15px}
+  .bill .line:last-of-type{border-bottom:0}
+  .bill .line b{font-weight:600;font-variant-numeric:tabular-nums;font-family:var(--mono);font-size:14px}
+  .bill .total{margin-top:8px;padding-top:16px;border-top:1.5px solid var(--text);display:flex;justify-content:space-between;font-weight:600;font-size:17px}
+  .bill .total b{font-family:var(--mono);font-size:16px}
+  .facts{display:grid;gap:18px;margin-top:30px}
+  .fact{display:grid;grid-template-columns:34px 1fr;gap:14px}
+  .fact i{font-family:var(--mono);font-style:normal;font-size:12px;color:var(--green);padding-top:4px}
+  .fact b{display:block;font-weight:600;margin-bottom:3px}
+  .fact p{color:var(--muted);font-size:15px}
+
+  /* ===== STEPS ===== */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:52px;border:1px solid var(--line);background:#fff}
+  @media (max-width:1000px){.steps{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.steps{grid-template-columns:1fr}}
+  .step{padding:28px 26px;border-right:1px solid var(--line);position:relative}
+  .step:last-child{border-right:0}
+  @media (max-width:1000px){.step:nth-child(2){border-right:0}.step:nth-child(1),.step:nth-child(2){border-bottom:1px solid var(--line)}}
+  @media (max-width:560px){.step{border-right:0;border-bottom:1px solid var(--line)}.step:last-child{border-bottom:0}}
+  .step .n{font-family:var(--mono);font-size:12px;color:var(--green);letter-spacing:.08em;margin-bottom:16px}
+  .step h3{margin-bottom:10px}
+  .step p{color:var(--muted);font-size:15px}
+  .bottom-line{margin-top:22px;padding:18px 22px;background:var(--green-tint);border-left:3px solid var(--green);font-size:15px}
+
+  /* ===== DARK BAND ===== */
+  .dark{background:var(--ink);color:var(--cream);border-top:0}
+  .dark .lead{color:rgba(242,240,235,.72)}
+  .dark .mono{color:rgba(242,240,235,.55)}
+  .dark .kicker.green{color:#3fbf85}
+  .three{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:52px;background:rgba(242,240,235,.14)}
+  @media (max-width:900px){.three{grid-template-columns:1fr}}
+  .cell{background:var(--ink);padding:30px 28px}
+  .cell .ico{width:40px;height:40px;border:1px solid rgba(242,240,235,.25);display:grid;place-items:center}
+  .cell .ico svg{width:20px;height:20px;stroke:#3fbf85;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .cell h3{margin:18px 0 8px;color:var(--cream)}
+  .cell p{color:rgba(242,240,235,.7);font-size:15px}
+
+  /* ===== INDUSTRIES ===== */
+  .verts{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;margin-top:52px;background:var(--line);border:1px solid var(--line)}
+  @media (max-width:1100px){.verts{grid-template-columns:repeat(3,1fr)}}
+  @media (max-width:700px){.verts{grid-template-columns:1fr 1fr}}
+  @media (max-width:460px){.verts{grid-template-columns:1fr}}
+  .vert{background:#fff;padding:26px 22px}
+  .vert.first{background:var(--ink);color:var(--cream)}
+  .vert .tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--green);display:block;margin-bottom:14px;min-height:14px}
+  .vert.first .tag{color:#3fbf85}
+  .vert h3{font-size:16.5px;margin-bottom:8px}
+  .vert p{font-size:14px;color:var(--muted)}
+  .vert.first p{color:rgba(242,240,235,.7)}
+
+  /* ===== PRICING ===== */
+  .price-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:52px}
+  @media (max-width:900px){.price-grid{grid-template-columns:1fr}}
+  .price{padding:34px;border:1px solid var(--line);background:#fff}
+  .price.hl{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+  .price h3{font-size:20px}
+  .price .sub{color:var(--muted);margin-top:6px;font-size:15px}
+  .price.hl .sub{color:rgba(242,240,235,.7)}
+  .price .big{font-size:40px;font-weight:600;letter-spacing:-0.03em;margin:22px 0 2px;line-height:1}
+  .price .unit{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .price.hl .unit{color:rgba(242,240,235,.55)}
+  .price ul{list-style:none;padding:0;margin:26px 0 0;display:grid;gap:12px}
+  .price li{display:flex;gap:12px;font-size:15px;color:var(--muted)}
+  .price.hl li{color:rgba(242,240,235,.8)}
+  .price li::before{content:"✓";font-family:var(--mono);color:var(--green);flex:none}
+  .price.hl li::before{color:#3fbf85}
+  .price .not li::before{content:"✕";color:var(--danger)}
+
+  /* ===== CALCULATOR ===== */
+  .calc{border:1px solid var(--line);background:#fff;margin-top:52px;display:grid;grid-template-columns:1.2fr .8fr}
+  @media (max-width:900px){.calc{grid-template-columns:1fr}}
+  .calc-form{padding:34px}
+  .field{display:grid;gap:6px;margin-bottom:16px}
+  .field label{font-size:13px;font-weight:600}
+  .field input[type=number],.field select,.form input,.form select,.form textarea{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:3px;font:inherit;font-size:15px;background:#fff;color:var(--text)}
+  .field input:focus,.form input:focus,.form select:focus,.form textarea:focus{border-color:var(--green);outline:none}
+  .field input[type=range]{width:100%;accent-color:var(--green)}
+  .field small{color:var(--muted);font-size:12px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
+  @media (max-width:520px){.grid2{grid-template-columns:1fr}}
+  .result{background:var(--ink);color:var(--cream);padding:34px;display:flex;flex-direction:column;justify-content:center}
+  .result .num{font-size:60px;font-weight:600;letter-spacing:-0.04em;margin:12px 0 0;line-height:1;font-variant-numeric:tabular-nums}
+  .result .num small{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:rgba(242,240,235,.6);margin-left:8px;font-weight:500}
+  .result .sub{color:rgba(242,240,235,.72);font-size:14px;margin-top:18px}
+  .result .brk{margin-top:22px;display:grid;gap:8px;font-size:13.5px;color:rgba(242,240,235,.85)}
+  .result .brk div{display:flex;justify-content:space-between;border-bottom:1px solid rgba(242,240,235,.14);padding-bottom:7px}
+  .result .brk b{font-family:var(--mono);font-weight:500;font-size:13px}
+  .result .btn{margin-top:24px;justify-content:center}
+
+  /* ===== MAP ===== */
+  .mapwrap{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+  @media (max-width:900px){.mapwrap{grid-template-columns:1fr;gap:36px}}
+  .map{background:#fff;border:1px solid var(--line);padding:18px}
+  .map svg{display:block;width:100%;height:auto}
+  .map .ring{fill:none;stroke:var(--line);stroke-width:1;stroke-dasharray:4 5}
+  .map .ringlbl,.map .lbl,.map .hublbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;fill:var(--muted)}
+  .map .hublbl{fill:var(--amber);font-weight:500}
+  .map .drop{fill:var(--ink);opacity:.82}
+  .map .hub{fill:var(--amber)}
+  .map .hubring{fill:none;stroke:var(--amber);stroke-width:1.5;opacity:.6}
+  .metros{display:grid;gap:12px;margin-top:26px}
+  .metros div{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--line);font-size:15px}
+  .metros .st{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+  .st.live{color:var(--green)} .st.next{color:var(--amber)} .st.ask{color:var(--muted)}
+
+  /* ===== WHY ===== */
+  .why{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:52px}
+  @media (max-width:900px){.why{grid-template-columns:1fr}}
+  .why .step{border:1px solid var(--line);background:#fff}
+  .team{margin-top:52px;display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center;padding:28px;border:1px solid var(--line);background:#fff}
+  @media (max-width:600px){.team{grid-template-columns:1fr}}
+  .team .stamp{height:64px;padding:0 24px}
+  .team .stamp .wm{height:28px}
+  .team p{color:var(--muted);font-size:15px}
+  .team b{color:var(--text);font-weight:600}
+  blockquote{margin:0;padding:26px 30px;border-left:3px solid var(--amber);background:#fff;border:1px solid var(--line);border-left:3px solid var(--amber);font-size:17px;line-height:1.5}
+  blockquote footer{margin-top:12px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .quotes{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:52px}
+  @media (max-width:900px){.quotes{grid-template-columns:1fr}}
+
+  /* ===== FAQ ===== */
+  .faq{margin-top:40px;border-top:1px solid var(--line);max-width:860px}
+  .faq details{border-bottom:1px solid var(--line)}
+  .faq summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:20px 0;font-weight:600;font-size:17px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"+";font-family:var(--mono);font-size:20px;color:var(--muted);flex:none;transition:transform .2s}
+  .faq details[open] summary::after{transform:rotate(45deg)}
+  .faq .a{padding:0 0 22px;color:var(--muted);font-size:16px}
+
+  /* ===== CONTACT ===== */
+  .contact{background:var(--ink);color:var(--cream);border-top:0}
+  .contact .split{align-items:start}
+  .contact h2{color:var(--cream)}
+  .contact .lead{color:rgba(242,240,235,.72)}
+  .contact-list{display:grid;gap:18px;margin-top:34px;color:rgba(242,240,235,.8)}
+  .contact-list b{display:block;color:var(--cream);font-weight:600}
+  .contact-list a{color:#3fbf85}
+  .form{background:var(--paper);color:var(--text);padding:34px;border:1px solid var(--line)}
+  .form .grid2{gap:0 14px}
+  .form .field{margin-bottom:14px}
+  .form textarea{min-height:96px;resize:vertical}
+  .form .btn{width:100%;justify-content:center;margin-top:6px}
+  .form .fine{font-size:12px;color:var(--muted);margin-top:12px;text-align:center}
+  .success{display:none;background:var(--green-tint);color:var(--green);padding:14px;margin-top:14px;font-weight:600;border:1px solid var(--green-line)}
+
+  footer.site{background:var(--ink);color:rgba(242,240,235,.6);padding:40px 0;font-size:13.5px;border-top:1px solid rgba(242,240,235,.12)}
+  footer.site .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+  footer.site .brand .sub{color:rgba(242,240,235,.5)}
+  footer.site nav{display:flex;gap:22px;flex-wrap:wrap}
+  footer.site nav a{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+  footer.site nav a:hover{color:var(--cream)}
+
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.route::after,.tape-track{animation:none}}
 </style>
-<style>
-  .lmx-cta:hover { filter:brightness(0.9); }
-  .lmx-tape:hover .lmx-tape-track { animation-play-state:paused; }
-  main { animation:lmxFade 200ms ease; }
-  .lmx-map .leaflet-tile-pane { filter:grayscale(1) contrast(0.9) brightness(1.06); }
-</style>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous">
 </head>
 <body>
 
+<!-- Vector wordmark, redrawn from the LMX branding PNGs. Reused everywhere via <use>. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="wm" viewBox="0 0 886 303">
+    <path fill="currentColor" d="M0 0H62V247H225V303H0Z"/>
+    <path fill="currentColor" transform="translate(264 0)" d="M0 0H55V303H0Z M252 0H307V303H252Z M48 0H86L178 303H130.5Z M259 0H221L129 303H176.5Z"/>
+    <path fill="#0a6644" transform="translate(601 0)" d="M13 0H78L280 303H214Z M206 0H271L70 303H4Z"/>
+  </symbol>
+</svg>
 
-<div style="font-family:Archivo, sans-serif; color:#1A1A1A; background:#FAFAF8; min-height:100vh;">
+<!-- ===== NAV ===== -->
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="LMX — home">
+      <span class="stamp" style="color:#f2f0eb"><svg class="wm"><use href="#wm"/></svg></span>
+      <span class="sub">Last Mile X</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#how">How it works</a>
+      <a href="#industries">Industries</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#calculator">Cost calculator</a>
+      <a href="#where">Where</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn btn-primary" href="#quote">Talk to us</a>
+  </div>
+</header>
 
-  <nav style="border-bottom:1px solid #D9D6CE; background:#FAFAF8; position:sticky; top:0; z-index:10;">
-    <div style="max-width:1120px; margin:0 auto; padding:0 40px; height:76px; display:flex; align-items:center; justify-content:space-between; gap:40px;">
-      
-      <a href="index.html" style="font-size: 40px; font-weight: 600; letter-spacing: -0.01em; line-height: 1; color: #1A1A1A; white-space: nowrap; display: flex; flex-direction: column; align-items: flex-start; gap: 4px;"><span>LM<span style="color: #1F7A4D;">X</span></span><span style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; font-size:10px; letter-spacing:0.14em; color:#6B6B66; line-height:1;">Last Mile X</span></a><div style="display:flex; gap:32px; align-items:center; overflow-x:auto;">
-        <a href="index.html" style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; white-space:nowrap; padding:6px 0; border-bottom:2px solid transparent; color: #1A1A1A; border-bottom-color: #D97706;">Home</a>
-        <a href="how-it-works.html" style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; white-space:nowrap; padding:6px 0; border-bottom:2px solid transparent; color: #6B6B66; border-bottom-color: transparent;">How it works</a>
-        <a href="autonomy-partners.html" style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; white-space:nowrap; padding:6px 0; border-bottom:2px solid transparent; color: #6B6B66; border-bottom-color: transparent;">For autonomy partners</a>
-        <a href="company.html" style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; white-space:nowrap; padding:6px 0; border-bottom:2px solid transparent; color: #6B6B66; border-bottom-color: transparent;">Company</a>
-        <a href="careers.html" style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; white-space:nowrap; padding:6px 0; border-bottom:2px solid transparent; color: #6B6B66; border-bottom-color: transparent;">Careers</a>
-      </div>
-    </div>
-  </nav>
-  <main>
-
-  <main style="">
-    <div style="max-width:1120px; margin:0 auto; padding:0 40px 120px;">
-
-      <section style="padding: 96px 0 0; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,420px); gap:64px; align-items:start;">
-        <div style="max-width:680px;">
-          <h1 style="font-size:44px; font-weight:600; line-height:1.08; letter-spacing:-0.02em; margin:0 0 28px;">The autonomy orchestrator for Industrial Last Mile</h1>
-          <p style="font-size:23px; font-weight:500; line-height:1.4; color:#1F3864; margin:0 0 28px;">We take the order. We deliver it. Full stop.</p>
-          <p style="font-size:17px; line-height:1.65; color:#6B6B66; margin:0 0 40px; text-wrap:pretty;">LMX is the orchestrator that builds the network for industrial last mile autonomy. Priced per drop. There is no software to buy.</p>
-          <div style="display:flex; gap:32px; align-items:center; flex-wrap:wrap;">
-            <a href="mailto:contact@lmxit.com" style="font-family:Archivo, sans-serif; font-size:16px; font-weight:500; color: #FFFFFF; background: #1F3864; border:1px solid #1F3864; border-radius:4px; padding:14px 24px; transition:filter 200ms ease;" class="lmx-cta">Talk to us</a>
-            <a href="autonomy-partners.html" style="font-size:16px; font-weight:500; color:#1F3864; border-bottom:2px solid #D97706; padding-bottom:3px;">For autonomy partners →</a>
-          </div>
+<!-- ===== HERO ===== -->
+<section class="hero flush" id="top">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="pill"><span class="dot"></span> Onboarding customers · Austin, TX</div>
+        <h1>Urgent B2B delivery,<br>run for you.<br><em>One price per drop.</em></h1>
+        <p class="lead">LMX takes over your local delivery operation — drivers, vehicles and dispatch — and replaces it with one price per completed delivery and a delivery window we commit to. You keep selling. We get it there.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#quote">Get a per-drop quote <span class="arrow">→</span></a>
+          <a class="btn btn-ghost" href="#calculator">See your true cost per drop</a>
         </div>
-        <div>
-          <div style="border:1px solid #D9D6CE; background:#FFFFFF; padding:24px;">
-            <div id="austin-map" style="width:100%; aspect-ratio:360 / 300; background:#FFFFFF;"></div>
-          </div>
-          <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; margin-top:16px; line-height:1.8;">Fig. 01 — Austin service area. Hub one in amber, drop clusters in navy, on OpenStreetMap.</div>
-        </div>
-      </section>
-
-      <div class="lmx-tape" style="margin-top:56px; border-top:1px solid #D9D6CE; border-bottom:1px solid #D9D6CE; overflow:hidden; position:relative;">
-        <div style="position:absolute; left:0; top:0; bottom:0; width:64px; background:linear-gradient(90deg,#FAFAF8,rgba(250,250,248,0)); z-index:2; pointer-events:none;"></div>
-        <div style="position:absolute; right:0; top:0; bottom:0; width:64px; background:linear-gradient(270deg,#FAFAF8,rgba(250,250,248,0)); z-index:2; pointer-events:none;"></div>
-        <div class="lmx-tape-track" style="display:flex; width:max-content; animation:lmxTape 48s linear infinite;">
-          <div style="display:flex; flex-shrink:0;"><div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; display:flex; align-items:center; gap:14px; padding:14px 28px; color:#6B6B66; white-space:nowrap;"><span style="width:6px; height:6px; border-radius:6px; background:#1F3864; flex-shrink:0;"></span><span style="color:#1A1A1A;">DRP-4471</span><span>Round Rock → Tech Ridge</span><span style="color:#1F3864;">ON TIME</span></div><div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; display:flex; align-items:center; gap:14px; padding:14px 28px; color:#6B6B66; white-space:nowrap;"><span style="width:6px; height:6px; border-radius:6px; background:#1F3864; flex-shrink:0; animation:lmxBlink 1.6s steps(1) infinite;"></span><span style="color:#1A1A1A;">DRP-4472</span><span>Del Valle → Southpark Meadows</span><span style="color:#1F3864;">IN TRANSIT</span></div><div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; display:flex; align-items:center; gap:14px; padding:14px 28px; color:#6B6B66; white-space:nowrap;"><span style="width:6px; height:6px; border-radius:6px; background:#1F7A4D; flex-shrink:0;"></span><span style="color:#1A1A1A;">DRP-4468</span><span>Pflugerville → Wells Branch</span><span style="color:#1F7A4D;">DELIVERED</span></div><div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; display:flex; align-items:center; gap:14px; padding:14px 28px; color:#6B6B66; white-space:nowrap;"><span style="width:6px; height:6px; border-radius:6px; background:#6B6B66; flex-shrink:0;"></span><span style="color:#1A1A1A;">DRP-4475</span><span>Buda → Kyle</span><span style="color:#6B6B66;">BATCHED</span></div><div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; display:flex; align-items:center; gap:14px; padding:14px 28px; color:#6B6B66; white-space:nowrap;"><span style="width:6px; height:6px; border-radius:6px; background:#1F3864; flex-shrink:0;"></span><span style="color:#1A1A1A;">DRP-4470</span><span>East Austin → Manor</span><span style="color:#1F3864;">ON TIME</span></div><div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; display:flex; align-items:center; gap:14px; padding:14px 28px; color:#6B6B66; white-space:nowrap;"><span style="width:6px; height:6px; border-radius:6px; background:#1F7A4D; flex-shrink:0;"></span><span style="color:#1A1A1A;">DRP-4463</span><span>Cedar Park → Leander</span><span style="color:#1F7A4D;">DELIVERED</span></div><div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; display:flex; align-items:center; gap:14px; padding:14px 28px; color:#6B6B66; white-space:nowrap;"><span style="width:6px; height:6px; border-radius:6px; background:#6B6B66; flex-shrink:0;"></span><span style="color:#1A1A1A;">DRP-4477</span><span>Airport Blvd → St. Elmo</span><span style="color:#6B6B66;">ASSIGNED</span></div><div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; display:flex; align-items:center; gap:14px; padding:14px 28px; color:#6B6B66; white-space:nowrap;"><span style="width:6px; height:6px; border-radius:6px; background:#1F7A4D; flex-shrink:0;"></span><span style="color:#1A1A1A;">DRP-4459</span><span>Georgetown → Hutto</span><span style="color:#1F7A4D;">DELIVERED</span></div><div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; display:flex; align-items:center; gap:14px; padding:14px 28px; color:#6B6B66; white-space:nowrap;"><span style="width:6px; height:6px; border-radius:6px; background:#D97706; flex-shrink:0;"></span><span style="color:#1A1A1A;">DRP-4479</span><span>San Marcos → Buda</span><span style="color:#D97706;">EVALUATING MODALITY</span></div></div>
-          <div style="display:flex; flex-shrink:0;" aria-hidden="true"><div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; display:flex; align-items:center; gap:14px; padding:14px 28px; color:#6B6B66; white-space:nowrap;"><span style="width:6px; height:6px; border-radius:6px; background:#1F3864; flex-shrink:0;"></span><span style="color:#1A1A1A;">DRP-4471</span><span>Round Rock → Tech Ridge</span><span style="color:#1F3864;">ON TIME</span></div><div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; display:flex; align-items:center; gap:14px; padding:14px 28px; color:#6B6B66; white-space:nowrap;"><span style="width:6px; height:6px; border-radius:6px; background:#1F3864; flex-shrink:0; animation:lmxBlink 1.6s steps(1) infinite;"></span><span style="color:#1A1A1A;">DRP-4472</span><span>Del Valle → Southpark Meadows</span><span style="color:#1F3864;">IN TRANSIT</span></div><div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; display:flex; align-items:center; gap:14px; padding:14px 28px; color:#6B6B66; white-space:nowrap;"><span style="width:6px; height:6px; border-radius:6px; background:#1F7A4D; flex-shrink:0;"></span><span style="color:#1A1A1A;">DRP-4468</span><span>Pflugerville → Wells Branch</span><span style="color:#1F7A4D;">DELIVERED</span></div><div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; display:flex; align-items:center; gap:14px; padding:14px 28px; color:#6B6B66; white-space:nowrap;"><span style="width:6px; height:6px; border-radius:6px; background:#6B6B66; flex-shrink:0;"></span><span style="color:#1A1A1A;">DRP-4475</span><span>Buda → Kyle</span><span style="color:#6B6B66;">BATCHED</span></div><div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; display:flex; align-items:center; gap:14px; padding:14px 28px; color:#6B6B66; white-space:nowrap;"><span style="width:6px; height:6px; border-radius:6px; background:#1F3864; flex-shrink:0;"></span><span style="color:#1A1A1A;">DRP-4470</span><span>East Austin → Manor</span><span style="color:#1F3864;">ON TIME</span></div><div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; display:flex; align-items:center; gap:14px; padding:14px 28px; color:#6B6B66; white-space:nowrap;"><span style="width:6px; height:6px; border-radius:6px; background:#1F7A4D; flex-shrink:0;"></span><span style="color:#1A1A1A;">DRP-4463</span><span>Cedar Park → Leander</span><span style="color:#1F7A4D;">DELIVERED</span></div><div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; display:flex; align-items:center; gap:14px; padding:14px 28px; color:#6B6B66; white-space:nowrap;"><span style="width:6px; height:6px; border-radius:6px; background:#6B6B66; flex-shrink:0;"></span><span style="color:#1A1A1A;">DRP-4477</span><span>Airport Blvd → St. Elmo</span><span style="color:#6B6B66;">ASSIGNED</span></div><div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; display:flex; align-items:center; gap:14px; padding:14px 28px; color:#6B6B66; white-space:nowrap;"><span style="width:6px; height:6px; border-radius:6px; background:#1F7A4D; flex-shrink:0;"></span><span style="color:#1A1A1A;">DRP-4459</span><span>Georgetown → Hutto</span><span style="color:#1F7A4D;">DELIVERED</span></div><div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; display:flex; align-items:center; gap:14px; padding:14px 28px; color:#6B6B66; white-space:nowrap;"><span style="width:6px; height:6px; border-radius:6px; background:#D97706; flex-shrink:0;"></span><span style="color:#1A1A1A;">DRP-4479</span><span>San Marcos → Buda</span><span style="color:#D97706;">EVALUATING MODALITY</span></div></div>
-        </div>
-      </div>
-
-      <section style="padding: 120px 0 0;">
-        <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; margin-bottom:28px;">The system</div>
-        <h2 style="font-size:29px; font-weight:600; line-height:1.2; letter-spacing:-0.02em; margin:0 0 20px; max-width:680px;">It already runs. These are the surfaces it runs on.</h2>
-        <p style="font-size:17px; line-height:1.65; color:#6B6B66; margin:0 0 40px; max-width:680px; text-wrap:pretty;">The orchestrator decides what waits and what goes. The app puts everything the driver needs at the door. Details from the live product.</p>
-
-        <div style="display:grid; grid-template-columns:minmax(0,1.55fr) minmax(0,1fr); gap:16px; align-items:start;">
-
-          <div>
-            <div style="font-family:'IBM Plex Mono', monospace; font-size:11px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; margin-bottom:10px;">Orchestrator — hold queue</div>
-            <div style="background:#101315; border:1px solid #D9D6CE; overflow:hidden;">
-              <div style="display:flex; align-items:center; gap:12px; padding:0 16px; height:42px; min-width:620px; background:#171b1f; border-bottom:1px solid rgba(240,239,235,0.13); white-space:nowrap;">
-                <span style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:#22a56f;">Hold queue</span>
-                <span style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:#05140d; background:#f0efeb; padding:3px 8px;">All</span>
-                <span style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:rgba(240,239,235,0.62);">Hot</span>
-                <span style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:rgba(240,239,235,0.62);">T1</span>
-                <span style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:rgba(240,239,235,0.62);">T2</span>
-                <span style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:rgba(240,239,235,0.42); margin-left:auto;">9 shown · re-checked every 60s</span>
-              </div>
-              <table style="border-collapse:collapse; min-width:620px; width:100%;">
-                <thead>
-                  <tr>
-                    <th style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:rgba(240,239,235,0.5); text-align:left; padding:9px 14px; border-bottom:1px solid rgba(240,239,235,0.26); white-space:nowrap;">Releases</th>
-                    <th style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:rgba(240,239,235,0.5); text-align:left; padding:9px 14px; border-bottom:1px solid rgba(240,239,235,0.26); white-space:nowrap;">Order</th>
-                    <th style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:rgba(240,239,235,0.5); text-align:left; padding:9px 14px; border-bottom:1px solid rgba(240,239,235,0.26); white-space:nowrap;">Shop</th>
-                    <th style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:rgba(240,239,235,0.5); text-align:left; padding:9px 14px; border-bottom:1px solid rgba(240,239,235,0.26); white-space:nowrap;">Batch</th>
-                    <th style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:rgba(240,239,235,0.5); text-align:left; padding:9px 14px; border-bottom:1px solid rgba(240,239,235,0.26); white-space:nowrap;">Lines</th>
-                    <th style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:rgba(240,239,235,0.5); text-align:left; padding:9px 14px; border-bottom:1px solid rgba(240,239,235,0.26); white-space:nowrap;">Value</th>
-                    <th style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:rgba(240,239,235,0.5); text-align:left; padding:9px 14px; border-bottom:1px solid rgba(240,239,235,0.26); white-space:nowrap;"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr style="background:rgba(232,102,63,0.07);">
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; color:#e8663f; font-family:'IBM Plex Mono', monospace; font-weight:500;">2 min</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap;"><span style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:#e8663f; border:1px solid #e8663f; padding:2px 5px; margin-right:8px;">HOT</span><span style="font-family:'IBM Plex Mono', monospace; font-size:12px;">MPG-77301</span></td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap;">Juan's Auto Parts</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; color:rgba(240,239,235,0.42);">alone</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; font-family:'IBM Plex Mono', monospace;">1</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; font-family:'IBM Plex Mono', monospace;">$24.00</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap;"><span style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:#f0efeb; border:1px solid rgba(240,239,235,0.26); padding:4px 9px;">Release</span></td>
-                  </tr>
-                  <tr style="background:rgba(232,102,63,0.07);">
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; color:#d9913f; font-family:'IBM Plex Mono', monospace; font-weight:500;">6 min</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap;"><span style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:#d9913f; border:1px solid #d9913f; padding:2px 5px; margin-right:8px;">T1</span><span style="font-family:'IBM Plex Mono', monospace; font-size:12px;">MPG-77288</span></td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap;">Vega Tire &amp; Service</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; color:#2fc186;">+1 batchable</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; font-family:'IBM Plex Mono', monospace;">3</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; font-family:'IBM Plex Mono', monospace;">$14.50</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap;"><span style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:#f0efeb; border:1px solid rgba(240,239,235,0.26); padding:4px 9px;">Release</span></td>
-                  </tr>
-                  <tr>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; color:#d9913f; font-family:'IBM Plex Mono', monospace; font-weight:500;">9 min</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap;"><span style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:#d9913f; border:1px solid #d9913f; padding:2px 5px; margin-right:8px;">T1</span><span style="font-family:'IBM Plex Mono', monospace; font-size:12px;">MPG-77291</span></td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap;">Cedar Collision</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; color:#2fc186;">+1 batchable</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; font-family:'IBM Plex Mono', monospace;">2</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; font-family:'IBM Plex Mono', monospace;">$14.50</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap;"><span style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:#f0efeb; border:1px solid rgba(240,239,235,0.26); padding:4px 9px;">Release</span></td>
-                  </tr>
-                  <tr>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; color:#22a56f; font-family:'IBM Plex Mono', monospace; font-weight:500;">14 min</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap;"><span style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:#22a56f; border:1px solid #22a56f; padding:2px 5px; margin-right:8px;">T2</span><span style="font-family:'IBM Plex Mono', monospace; font-size:12px;">BAL-4402</span></td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap;">Riverside Auto Body</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; color:rgba(240,239,235,0.42);">alone</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; font-family:'IBM Plex Mono', monospace;">6</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; font-family:'IBM Plex Mono', monospace;">$9.80</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap;"><span style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:#f0efeb; border:1px solid rgba(240,239,235,0.26); padding:4px 9px;">Release</span></td>
-                  </tr>
-                  <tr>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; color:#22a56f; font-family:'IBM Plex Mono', monospace; font-weight:500;">22 min</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap;"><span style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:#22a56f; border:1px solid #22a56f; padding:2px 5px; margin-right:8px;">T2</span><span style="font-family:'IBM Plex Mono', monospace; font-size:12px;">BAL-4405</span></td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap;">Hudson Motors</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; color:#2fc186;">+1 batchable</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; font-family:'IBM Plex Mono', monospace;">2</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; font-family:'IBM Plex Mono', monospace;">$9.80</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap;"><span style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:#f0efeb; border:1px solid rgba(240,239,235,0.26); padding:4px 9px;">Release</span></td>
-                  </tr>
-                  <tr>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; color:#22a56f; font-family:'IBM Plex Mono', monospace; font-weight:500;">27 min</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap;"><span style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:#22a56f; border:1px solid #22a56f; padding:2px 5px; margin-right:8px;">T2</span><span style="font-family:'IBM Plex Mono', monospace; font-size:12px;">BAL-4411</span></td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap;">Hudson Motors</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; color:#2fc186;">+1 batchable</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; font-family:'IBM Plex Mono', monospace;">4</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; font-family:'IBM Plex Mono', monospace;">$9.80</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap;"><span style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:#f0efeb; border:1px solid rgba(240,239,235,0.26); padding:4px 9px;">Release</span></td>
-                  </tr>
-                  <tr>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; color:#22a56f; font-family:'IBM Plex Mono', monospace; font-weight:500;">34 min</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap;"><span style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:#22a56f; border:1px solid #22a56f; padding:2px 5px; margin-right:8px;">T2</span><span style="font-family:'IBM Plex Mono', monospace; font-size:12px;">NRT-9910</span></td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap;">Del Valle Truck Center</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; color:rgba(240,239,235,0.42);">alone</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; font-family:'IBM Plex Mono', monospace;">9</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; font-family:'IBM Plex Mono', monospace;">$11.20</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap;"><span style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:#f0efeb; border:1px solid rgba(240,239,235,0.26); padding:4px 9px;">Release</span></td>
-                  </tr>
-                  <tr>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; color:rgba(240,239,235,0.62); font-family:'IBM Plex Mono', monospace; font-weight:500;">58 min</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap;"><span style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:rgba(240,239,235,0.62); border:1px solid rgba(240,239,235,0.62); padding:2px 5px; margin-right:8px;">T3</span><span style="font-family:'IBM Plex Mono', monospace; font-size:12px;">NRT-9902</span></td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap;">Mueller Service Lane</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; color:rgba(240,239,235,0.42);">alone</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; font-family:'IBM Plex Mono', monospace;">1</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; font-family:'IBM Plex Mono', monospace;">$7.20</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap;"><span style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:#f0efeb; border:1px solid rgba(240,239,235,0.26); padding:4px 9px;">Release</span></td>
-                  </tr>
-                  <tr>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; color:rgba(240,239,235,0.62); font-family:'IBM Plex Mono', monospace; font-weight:500;">71 min</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap;"><span style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:rgba(240,239,235,0.62); border:1px solid rgba(240,239,235,0.62); padding:2px 5px; margin-right:8px;">T3</span><span style="font-family:'IBM Plex Mono', monospace; font-size:12px;">MPG-77250</span></td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap;">Brentwood Brake</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; color:#2fc186;">+1 batchable</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; font-family:'IBM Plex Mono', monospace;">5</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap; font-family:'IBM Plex Mono', monospace;">$7.20</td>
-                    <td style="padding:11px 14px; border-bottom:1px solid rgba(240,239,235,0.13); font-size:13px; color:#f0efeb; white-space:nowrap;"><span style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:#f0efeb; border:1px solid rgba(240,239,235,0.26); padding:4px 9px;">Release</span></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div>
-            <div style="font-family:'IBM Plex Mono', monospace; font-size:11px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; margin-bottom:10px;">Driver app — stop detail</div>
-            <div style="background:#101315; border:1px solid #D9D6CE; overflow:hidden;">
-              <div style="display:flex; justify-content:space-between; padding:12px 18px 0;">
-                <span style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:rgba(240,239,235,0.62);">3:38</span>
-                <span style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:rgba(240,239,235,0.62);">▮▮▯ 84%</span>
-              </div>
-              <div style="padding:16px 18px; min-width:320px;">
-                <div style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:rgba(240,239,235,0.62); margin-bottom:12px;">‹ Route R-4417</div>
-                <div style="font-family:'Source Serif 4', Georgia, serif; font-size:21px; font-weight:600; color:#f0efeb; line-height:1.14;">Juan's Auto Parts</div>
-                <div style="font-size:13px; color:rgba(240,239,235,0.62); margin-top:6px;">2412 E 7th St, Govalle · 0.4 mi · ~3 min</div>
-                <div style="display:flex; gap:8px; margin-top:14px;">
-                  <div style="flex:1; text-align:center; padding:12px; border:1px solid rgba(240,239,235,0.26); color:#f0efeb; font-size:13px;">Open in Maps</div>
-                  <div style="flex:1; text-align:center; padding:12px; border:1px solid rgba(240,239,235,0.26); color:#f0efeb; font-size:13px;">Call shop</div>
-                </div>
-                <div style="margin-top:14px; padding:12px 14px; background:#171b1f; border-left:2px solid #e8a75a;">
-                  <div style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:#e8a75a; margin-bottom:5px;">Access notes</div>
-                  <div style="font-size:13px; color:rgba(240,239,235,0.8); line-height:1.5;">Rear loading dock on Elm side. Ask for Juan at the counter — bell is on the left.</div>
-                </div>
-                <div style="display:flex; align-items:center; margin-top:16px;">
-                  <span style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:#2fc186; white-space:nowrap;">Collect · 4 lines</span>
-                  <span style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:#f0efeb; border:1px solid rgba(240,239,235,0.26); padding:4px 9px; margin-left:auto;">Scan parcel</span>
-                </div>
-                <div style="margin-top:10px; display:grid; gap:1px; background:rgba(240,239,235,0.13);">
-                  <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:#101315;"><span style="width:14px; color:#2fc186;">✓</span><div style="flex:1;"><div style="font-size:13px; color:#f0efeb;">Brake rotor — front L</div><div style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:rgba(240,239,235,0.62);">MPG-77301</div></div><b style="font-size:13px; color:#f0efeb;">×2</b></div>
-                  <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:#101315;"><span style="width:14px; color:#2fc186;">✓</span><div style="flex:1;"><div style="font-size:13px; color:#f0efeb;">Ceramic pad set</div><div style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:rgba(240,239,235,0.62);">MPG-77301</div></div><b style="font-size:13px; color:#f0efeb;">×1</b></div>
-                  <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:#101315; opacity:0.6;"><span style="width:14px;"></span><div style="flex:1;"><div style="font-size:13px; color:#f0efeb;">Caliper bracket</div><div style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:rgba(240,239,235,0.62);">MPG-77288</div></div><b style="font-size:13px; color:#f0efeb;">×1</b></div>
-                </div>
-                <div style="margin-top:12px; padding:11px 13px; background:#171b1f;">
-                  <div style="font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; line-height:1.5; color:#e8a75a;">↩ Return pickup</div>
-                  <div style="font-size:13px; color:#f0efeb; margin-top:4px;">Core #4471 — collect the old rotor</div>
-                </div>
-                <div style="display:flex; gap:8px; margin-top:14px;">
-                  <div style="padding:13px 16px; border:1px solid rgba(240,239,235,0.26); color:#f0efeb; font-size:13px;">Flag an issue</div>
-                  <div style="flex:1; text-align:center; padding:13px; background:#22a56f; color:#05140d; font-size:13px; font-weight:600;">Scan 2 more</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      <section style="padding: 120px 0 0;">
-        <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; margin-bottom:28px;">The problem</div>
-        <h2 style="font-size:29px; font-weight:600; line-height:1.2; letter-spacing:-0.02em; margin:0 0 32px; max-width:680px;">Every distributor runs a delivery operation. None of them wants to.</h2>
-        <div style="max-width:680px; margin-bottom:64px;">
-          <p style="font-size:17px; line-height:1.65; margin:0 0 20px; text-wrap:pretty;">Industrial last mile is the same job in every sector: urgent, low-density B2B deliveries that keep a repair bay, a job site, or a plant floor from going idle. Auto parts alone accounts for roughly 350 million deliveries a year in the United States, about $6 billion of cost — and almost none of it is charged to the customer receiving the goods.</p>
-          <p style="font-size:17px; line-height:1.65; color:#6B6B66; margin:0; text-wrap:pretty;">That delivery is run by the distributors themselves. Their own vehicles, their own drivers, their own dispatcher on their own phone. It is a cost they absorb to protect a sale, not a business they chose to be in.</p>
-        </div>
-
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px;">
-          <div style="background: #FFFFFF; border: 1px solid #D9D6CE; border-top: 1px solid #D9D6CE; padding:28px;">
-            <h3 style="font-size:21px; font-weight:600; line-height:1.35; margin:0 0 12px;">The economics are upside down</h3>
-            <p style="font-size:17px; line-height:1.65; color:#6B6B66; margin:0;">Delivery frequently costs more than the margin on the part being delivered.</p>
-          </div>
-          <div style="background: #FFFFFF; border: 1px solid #D9D6CE; border-top: 1px solid #D9D6CE; padding:28px;">
-            <h3 style="font-size:21px; font-weight:600; line-height:1.35; margin:0 0 12px;">The market is fragmented</h3>
-            <p style="font-size:17px; line-height:1.65; color:#6B6B66; margin:0;">Rooftops three miles apart, each with its own fleet and its own dispatcher. Nothing is shared.</p>
-          </div>
-          <div style="background: #FFFFFF; border: 1px solid #D9D6CE; border-top: 1px solid #D9D6CE; padding:28px;">
-            <h3 style="font-size:21px; font-weight:600; line-height:1.35; margin:0 0 12px;">Nobody commits to a time</h3>
-            <p style="font-size:17px; line-height:1.65; color:#6B6B66; margin:0;">Ask a distributor for a delivery guarantee and you will not get one. They cannot make it, so they do not offer it.</p>
-          </div>
-          <div style="background: #FFFFFF; border: 1px solid #D9D6CE; border-top: 1px solid #D9D6CE; padding:28px;">
-            <h3 style="font-size:21px; font-weight:600; line-height:1.35; margin:0 0 12px;">Spot solutions do not hold</h3>
-            <p style="font-size:17px; line-height:1.65; color:#6B6B66; margin:0;">Gig platforms give a release valve and take away route memory, accountability, and the relationship.</p>
-          </div>
-        </div>
-
-        <div style="margin-top:80px; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,480px); gap:64px; align-items:start;">
-          <div style="display:grid; gap:40px; max-width:680px;">
-            <div style="border-left: 2px solid #D97706; padding-left:28px;">
-              <div style="font-size:21px; line-height:1.5; text-wrap:pretty;">The shops always want the parts 20 minutes ago at the cheapest price possible — but I'll never commit to a delivery time, because I can't.</div>
-              <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; margin-top:20px;">Owner, regional wholesale distributor</div>
-            </div>
-            <div style="border-left: 2px solid #D97706; padding-left:28px;">
-              <div style="font-size:21px; line-height:1.5; text-wrap:pretty;">We run twelve dealerships and twelve dispatchers. We have rooftops three miles apart with their own driver fleets. My techs know it's broken.</div>
-              <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; margin-top:20px;">Fixed operations director, 12-store dealer group</div>
-            </div>
-          </div>
-          <div>
-            <div style="background: #FFFFFF; border: 1px solid #D9D6CE; border-top: 1px solid #D9D6CE; padding:32px;">
-              <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:end; height:200px;">
-                <div style="display:flex; flex-direction:column; justify-content:flex-end; height:100%;">
-                  <div style="background:#1F3864; height:52%;"></div>
-                </div>
-                <div style="display:flex; flex-direction:column; justify-content:flex-end; height:100%;">
-                  <div style="background: #D97706; height:88%;"></div>
-                </div>
-              </div>
-              <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; border-top:1px solid #1A1A1A; padding-top:12px; font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66;">
-                <div>Gross margin<br>on the part</div>
-                <div>Cost to<br>deliver it</div>
-              </div>
-            </div>
-            <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; margin-top:16px; line-height:1.8;">Fig. 02 — Delivery cost against margin on a typical urgent drop. Modeled from field research.</div>
-          </div>
-        </div>
-
-        <div style="margin:80px 0 0; padding: 80px 0; border-top:1px solid #D9D6CE; border-bottom:1px solid #D9D6CE;">
-          <div style="font-size:23px; font-weight:500; line-height:1.4; color:#1F3864; max-width:680px; text-wrap:pretty;">When the part doesn't arrive, a technician stands still and a bay stops billing. The delay is not an inconvenience. It is the cost.</div>
-        </div>
-      </section>
-
-      <section style="padding: 120px 0 0;">
-        <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; margin-bottom:28px;">Why now</div>
-        <h2 style="font-size:29px; font-weight:600; line-height:1.2; letter-spacing:-0.02em; margin:0 0 32px; max-width:680px;">Autonomous delivery is arriving. It is not arriving here.</h2>
-        <div style="max-width:680px; margin-bottom:64px;">
-          <p style="font-size:17px; line-height:1.65; margin:0 0 20px; text-wrap:pretty;">Amazon operates its own drone delivery program across a dozen states. Walmart delivers by drone from more than a hundred supercenters. Serve runs sidewalk robots in five states. Uber expects a substantial share of its delivery volume to be handled by machines.</p>
-          <p style="font-size:17px; line-height:1.65; color:#6B6B66; margin:0 0 20px; text-wrap:pretty;">All of it is consumer. None of it reaches the industrial last mile — the urgent, business-to-business layer that sits between a distributor and the professional who cannot work without the part.</p>
-          <p style="font-size:17px; line-height:1.65; color:#6B6B66; margin:0 0 20px; text-wrap:pretty;">The reason is structural. Autonomy companies supply a spot solution: a vehicle, a route, an app. An industrial distributor needs a full solution — dispatch, exceptions, returns, proof of delivery, a fallback when the machine can't run, and one party accountable for all of it.</p>
-          <p style="font-size:17px; line-height:1.65; margin:0; font-weight:500;">That gap is what LMX closes.</p>
-        </div>
-
-        <div style="background: #FFFFFF; border: 1px solid #D9D6CE; border-top: 1px solid #D9D6CE; padding:32px;">
-          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:32px;">
-            <div>
-              <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; padding-bottom:12px; border-bottom:1px solid #1A1A1A;">Where autonomy operates</div>
-              <div style="display:grid; gap:8px; margin-top:16px;">
-                <div style="background:#1F3864; color:#FFFFFF; padding:14px 16px; font-size:15px;">Residential parcel</div>
-                <div style="background:#1F3864; color:#FFFFFF; padding:14px 16px; font-size:15px;">Restaurant and grocery</div>
-                <div style="background:#1F3864; color:#FFFFFF; padding:14px 16px; font-size:15px;">Retail same-day</div>
-                <div style="background:#1F3864; color:#FFFFFF; padding:14px 16px; font-size:15px;">Pharmacy to consumer</div>
-              </div>
-              <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; margin-top:16px;">Consumer · aggregated demand · one integration</div>
-            </div>
-            <div>
-              <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; padding-bottom:12px; border-bottom:1px solid #1A1A1A;">Where it does not</div>
-              <div style="display:grid; gap:8px; margin-top:16px;">
-                <div style="border:1px solid #D9D6CE; padding:14px 16px; font-size:15px; color:#6B6B66;">Auto parts to repair shops</div>
-                <div style="border:1px solid #D9D6CE; padding:14px 16px; font-size:15px; color:#6B6B66;">Maintenance and repair supply</div>
-                <div style="border:1px solid #D9D6CE; padding:14px 16px; font-size:15px; color:#6B6B66;">Field service parts</div>
-                <div style="border:1px solid #D9D6CE; padding:14px 16px; font-size:15px; color:#6B6B66;">Construction and medical supply</div>
-              </div>
-              <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; margin-top:16px;">Industrial · fragmented demand · no integration path</div>
-            </div>
-          </div>
-        </div>
-        <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; margin-top:16px; line-height:1.8; max-width:680px;">Fig. 03 — Autonomous delivery by segment. Filled blocks have live programs at scale; outlined blocks have none.</div>
-      </section>
-
-      <section style="padding: 120px 0 0;">
-        <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; margin-bottom:28px;">The company</div>
-        <h2 style="font-size:29px; font-weight:600; line-height:1.2; letter-spacing:-0.02em; margin:0 0 64px; max-width:680px;">One operator. One contract. One delivery promise.</h2>
-
-        <div style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,400px); gap:64px; align-items:start;">
-          <div style="display:grid; gap:16px;">
-            <div style="background: #FFFFFF; border: 1px solid #D9D6CE; border-top: 1px solid #D9D6CE; padding:28px;">
-              <h3 style="font-size:21px; font-weight:600; line-height:1.35; margin:0 0 12px;">LMX OS</h3>
-              <p style="font-size:17px; line-height:1.65; color:#6B6B66; margin:0;">Our own dispatch system. It takes in orders, assigns urgency, decides what to hold and what to send, chooses how each drop travels, and re-plans the whole fleet continuously as conditions change. It learns from every delivery we run.</p>
-            </div>
-            <div style="background: #FFFFFF; border: 1px solid #D9D6CE; border-top: 1px solid #D9D6CE; padding:28px;">
-              <h3 style="font-size:21px; font-weight:600; line-height:1.35; margin:0 0 12px;">Fleet</h3>
-              <p style="font-size:17px; line-height:1.65; color:#6B6B66; margin:0;">Drivers and vehicles under LMX control and LMX standards. Operational discipline from people who ran delivery networks at Amazon, applied to an industry that has never had it.</p>
-            </div>
-            <div style="background: #FFFFFF; border: 1px solid #D9D6CE; border-top: 1px solid #D9D6CE; padding:28px;">
-              <h3 style="font-size:21px; font-weight:600; line-height:1.35; margin:0 0 12px;">Autonomy</h3>
-              <p style="font-size:17px; line-height:1.65; color:#6B6B66; margin:0;">We are the operator; autonomy providers are our partners. Their vehicles plug into our network. We keep the delivery promise regardless of which one carries the part.</p>
-            </div>
-          </div>
-          <div>
-            <div style="background: #FFFFFF; border: 1px solid #D9D6CE; border-top: 1px solid #D9D6CE; padding:32px;">
-              <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; margin-bottom:12px;">Order in ↓</div>
-              <div style="display:grid; gap:1px; background:#D9D6CE; border:1px solid #D9D6CE;">
-                <div style="background:#1F3864; color:#FFFFFF; padding:20px;">
-                  <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:6px;">Layer 3</div>
-                  <div style="font-size:17px;">LMX OS — urgency, hold, route, re-plan</div>
-                </div>
-                <div style="background:#1F3864; color:#FFFFFF; padding:20px;">
-                  <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:6px;">Layer 2</div>
-                  <div style="font-size:17px;">Fleet — LMX drivers and vehicles</div>
-                </div>
-                <div style="background:#FFFFFF; padding:20px;">
-                  <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; margin-bottom:6px;">Layer 1</div>
-                  <div style="font-size:17px;">Autonomy partners — capacity as it clears</div>
-                </div>
-              </div>
-              <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; margin-top:12px; text-align:right;">↓ Delivery out, one promise</div>
-            </div>
-            <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; margin-top:16px; line-height:1.8;">Fig. 04 — The stack. An order enters at the top and leaves as a delivery, whichever layer carries it.</div>
-          </div>
-        </div>
-
-        <div style="margin:80px 0 0; padding: 80px 0; border-top:1px solid #D9D6CE; border-bottom:1px solid #D9D6CE;">
-          <div style="font-size:23px; font-weight:500; line-height:1.4; color:#1F3864; max-width:680px; text-wrap:pretty;">We are not a platform for running your delivery better. We are the company that runs it.</div>
-        </div>
-      </section>
-
-      <section style="padding: 120px 0 0;">
-        <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; margin-bottom:28px;">The research</div>
-        <h2 style="font-size:29px; font-weight:600; line-height:1.2; letter-spacing:-0.02em; margin:0 0 56px; max-width:680px;">We did not model this from a spreadsheet.</h2>
-        <div data-stats style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:40px; border-top:1px solid #1A1A1A; padding-top:32px;">
-          <div>
-            <div style="font-family:'IBM Plex Mono', monospace; font-size:48px; line-height:1; color:#1F3864; white-space:nowrap;" data-count="10254">10,254</div>
-            <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; margin-top:16px; line-height:1.7;">Deliveries analyzed from live route data</div>
-          </div>
-          <div>
-            <div style="font-family:'IBM Plex Mono', monospace; font-size:48px; line-height:1; color:#1F3864; white-space:nowrap;" data-count="50" data-suffix="+">50+</div>
-            <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; margin-top:16px; line-height:1.7;">Shops and distributors interviewed</div>
-          </div>
-          <div>
-            <div style="font-family:'IBM Plex Mono', monospace; font-size:48px; line-height:1; color:#1F3864; white-space:nowrap;" data-count="30" data-suffix="+">30+</div>
-            <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; margin-top:16px; line-height:1.7;">Delivery platforms evaluated</div>
-          </div>
-          <div>
-            <div style="font-family:'IBM Plex Mono', monospace; font-size:48px; line-height:1; color:#1F3864; white-space:nowrap;" data-count="3" data-suffix=" weeks">3 weeks</div>
-            <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; margin-top:16px; line-height:1.7;">Spent driving parts routes as a contract driver</div>
-          </div>
-        </div>
-        <p style="font-size:14px; line-height:1.5; color:#6B6B66; margin:32px 0 0; max-width:680px;">Primary research conducted January to July 2026, across New Jersey, Texas, and California.</p>
-      </section>
-
-      <section style="padding: 120px 0 0;">
-        <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; margin-bottom:28px;">The market</div>
-        <h2 style="font-size:29px; font-weight:600; line-height:1.2; letter-spacing:-0.02em; margin:0 0 32px; max-width:680px;">Auto parts is the wedge, not the ceiling.</h2>
-        <div style="max-width:680px; margin-bottom:56px;">
-          <p style="font-size:17px; line-height:1.65; margin:0 0 20px; text-wrap:pretty;">The same structure repeats wherever a professional is blocked without a part: maintenance and repair operations, field services, construction, medical supply. Different customer, identical problem — urgent, low-density, business-to-business delivery that nobody is in the business of running.</p>
-          <p style="font-size:17px; line-height:1.65; color:#6B6B66; margin:0; text-wrap:pretty;">We start with auto parts, in Austin, because it has the highest concentration of the conditions that make this work.</p>
-        </div>
-        <table style="width:100%; border-collapse:collapse;">
-          <thead>
-            <tr>
-              <th style="text-align:left; font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; padding:0 24px 14px 0; border-bottom:1px solid #1A1A1A;">Vertical</th>
-              <th style="text-align:left; font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; padding:0 24px 14px 0; border-bottom:1px solid #1A1A1A;">Annual urgent delivery spend</th>
-              <th style="text-align:left; font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; padding:0 0 14px; border-bottom:1px solid #1A1A1A;">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="font-size:17px; padding:18px 24px 18px 0; border-bottom:1px solid #D9D6CE;">Auto parts</td>
-              <td style="font-family:'IBM Plex Mono', monospace; font-size:15px; padding:18px 24px 18px 0; border-bottom:1px solid #D9D6CE;">$6.0B</td>
-              <td style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#D97706; padding:18px 0; border-bottom:1px solid #D9D6CE;">Live</td>
-            </tr>
-            <tr>
-              <td style="font-size:17px; padding:18px 24px 18px 0; border-bottom:1px solid #D9D6CE;">Maintenance and repair operations</td>
-              <td style="font-family:'IBM Plex Mono', monospace; font-size:15px; padding:18px 24px 18px 0; border-bottom:1px solid #D9D6CE;">$8.0B</td>
-              <td style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; padding:18px 0; border-bottom:1px solid #D9D6CE;">Expansion</td>
-            </tr>
-            <tr>
-              <td style="font-size:17px; padding:18px 24px 18px 0; border-bottom:1px solid #D9D6CE;">Construction supply</td>
-              <td style="font-family:'IBM Plex Mono', monospace; font-size:15px; padding:18px 24px 18px 0; border-bottom:1px solid #D9D6CE;">$12.0B</td>
-              <td style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; padding:18px 0; border-bottom:1px solid #D9D6CE;">Expansion</td>
-            </tr>
-            <tr>
-              <td style="font-size:17px; padding:18px 24px 18px 0; border-bottom:1px solid #D9D6CE;">Field services</td>
-              <td style="font-family:'IBM Plex Mono', monospace; font-size:15px; padding:18px 24px 18px 0; border-bottom:1px solid #D9D6CE;">$5.0B</td>
-              <td style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; padding:18px 0; border-bottom:1px solid #D9D6CE;">Expansion</td>
-            </tr>
-            <tr>
-              <td style="font-size:17px; padding:18px 24px 18px 0; border-bottom:1px solid #D9D6CE;">Medical supply</td>
-              <td style="font-family:'IBM Plex Mono', monospace; font-size:15px; padding:18px 24px 18px 0; border-bottom:1px solid #D9D6CE;">$4.0B</td>
-              <td style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; padding:18px 0; border-bottom:1px solid #D9D6CE;">Expansion</td>
-            </tr>
-          </tbody>
-        </table>
-        <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; margin-top:16px; line-height:1.8; max-width:680px;">Industry-level estimates, United States. Figures pending source confirmation before launch.</div>
-      </section>
-
-      <section style="padding: 120px 0 0;">
-        <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; margin-bottom:28px;">Four routes in</div>
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:16px;">
-          <div style="background: #FFFFFF; border: 1px solid #D9D6CE; border-top: 1px solid #D9D6CE; padding:24px; display:flex; flex-direction:column; gap:16px;">
-            <h3 style="font-size:21px; font-weight:600; line-height:1.35; margin:0;">Distributors</h3>
-            <p style="font-size:17px; line-height:1.65; color:#6B6B66; margin:0; flex:1;">Exit last mile entirely. Talk to us about your operation.</p>
-            <a href="how-it-works.html" style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#1F3864; align-self:flex-start; border-bottom:1px solid #D9D6CE; padding-bottom:3px; white-space:nowrap;">How it works →</a>
-          </div>
-          <div style="background: #FFFFFF; border: 1px solid #D9D6CE; border-top: 1px solid #D9D6CE; padding:24px; display:flex; flex-direction:column; gap:16px;">
-            <h3 style="font-size:21px; font-weight:600; line-height:1.35; margin:0;">Autonomy partners</h3>
-            <p style="font-size:17px; line-height:1.65; color:#6B6B66; margin:0; flex:1;">You have vehicles and idle capacity. We have committed daytime volume.</p>
-            <a href="autonomy-partners.html" style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#1F3864; align-self:flex-start; border-bottom:1px solid #D9D6CE; padding-bottom:3px; white-space:nowrap;">How we partner →</a>
-          </div>
-          <div style="background: #FFFFFF; border: 1px solid #D9D6CE; border-top: 1px solid #D9D6CE; padding:24px; display:flex; flex-direction:column; gap:16px;">
-            <h3 style="font-size:21px; font-weight:600; line-height:1.35; margin:0;">Engineers</h3>
-            <p style="font-size:17px; line-height:1.65; color:#6B6B66; margin:0; flex:1;">Real-time optimization on live physical operations. Come build it.</p>
-            <a href="careers.html" style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#1F3864; align-self:flex-start; border-bottom:1px solid #D9D6CE; padding-bottom:3px; white-space:nowrap;">Open roles →</a>
-          </div>
-          <div style="background: #FFFFFF; border: 1px solid #D9D6CE; border-top: 1px solid #D9D6CE; padding:24px; display:flex; flex-direction:column; gap:16px;">
-            <h3 style="font-size:21px; font-weight:600; line-height:1.35; margin:0;">Drivers</h3>
-            <p style="font-size:17px; line-height:1.65; color:#6B6B66; margin:0; flex:1;">Daytime routes out of Austin, TX</p>
-            <a href="careers.html" style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#1F3864; align-self:flex-start; border-bottom:1px solid #D9D6CE; padding-bottom:3px; white-space:nowrap;">Driver roles →</a>
-          </div>
-        </div>
-      </section>
-
-    </div>
-  </main>
-  
-  </main>
-<footer style="border-top:1px solid #D9D6CE; background:#FAFAF8;">
-    <div style="max-width:1120px; margin:0 auto; padding:64px 40px;">
-      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:40px;">
-        <div style="display:flex; flex-direction:column; gap:12px; align-items:flex-start;">
-          <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; margin-bottom:8px;">Pages</div>
-          <a href="index.html" style="font-size:15px; color:#1A1A1A;">Home</a>
-          <a href="how-it-works.html" style="font-size:15px; color:#1A1A1A;">How it works</a>
-          <a href="autonomy-partners.html" style="font-size:15px; color:#1A1A1A;">For autonomy partners</a>
-          <a href="company.html" style="font-size:15px; color:#1A1A1A;">Company</a>
-          <a href="careers.html" style="font-size:15px; color:#1A1A1A;">Careers</a>
-        </div>
-        <div style="display:flex; flex-direction:column; gap:12px; align-items:flex-start;">
-          <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; margin-bottom:8px;">Contact</div>
-          <a href="mailto:contact@lmxit.com" style="font-size:15px; color:#1A1A1A;">contact@lmxit.com</a>
-          <div style="font-size:15px; color:#6B6B66;">LMX, Inc.</div>
-          <div style="font-size:15px; color:#6B6B66;">Austin, Texas</div>
-        </div>
-        <div style="display:flex; flex-direction:column; gap:12px; align-items:flex-start;">
-          <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:#6B6B66; margin-bottom:8px;">Legal</div>
-          <a href="#" style="font-size:15px; color:#1A1A1A;">Privacy</a>
-          <a href="#" style="font-size:15px; color:#1A1A1A;">Terms</a>
-          <div style="font-size:15px; color:#6B6B66;">© 2026 LMX, Inc.</div>
+        <div class="hero-proof">
+          <div><b>1 number</b><span>per completed delivery</span></div>
+          <div><b>$0</b><span>software or seat fees</span></div>
+          <div><b>Committed</b><span>delivery windows, tracked</span></div>
         </div>
       </div>
+
+      <div>
+        <div class="device" aria-label="What your customer sees">
+          <div class="row"><span class="mono">Your customer's view</span><span class="badge">On the way</span></div>
+          <h3>Order #48213 · Brake caliper, front left</h3>
+          <div class="eta">11:42 <small>estimated arrival</small></div>
+          <div class="route"></div>
+          <div class="stops"><span>Your warehouse</span><span>Northside Auto Repair</span></div>
+          <div class="timeline">
+            <div class="tl"><i>✓</i><div>Picked up <span>· 11:04 · dispatched by LMX</span></div></div>
+            <div class="tl"><i>✓</i><div>Shop notified <span>· driver name + live ETA sent</span></div></div>
+            <div class="tl"><i class="pending">·</i><div>Delivered <span>· photo proof captured on arrival</span></div></div>
+          </div>
+          <div class="float"><span class="mono">Committed window</span><b>Inside · by 12:00</b></div>
+        </div>
+        <div class="fig">Fig. 01 — Shop-side tracking. Notification, live ETA, proof of delivery. From the live product.</div>
+      </div>
     </div>
-  </footer>
-</div>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous"></script>
-<script src="image-slot.js"></script>
-<script src="site.js"></script>
+  </div>
+
+  <div class="tape" aria-hidden="true">
+    <div class="tape-track">
+      <span><b>DRP-4472</b> Del Valle → Southpark Meadows <i class="ok">In transit</i></span>
+      <span><b>DRP-4468</b> Pflugerville → Wells Branch <i class="ok">Delivered 10:58 · inside window</i></span>
+      <span><b>DRP-4479</b> Tech Ridge → Round Rock <i class="amb">Hot · dispatched</i></span>
+      <span><b>DRP-4461</b> Downtown → Cedar Park <i class="ok">Delivered 10:41 · POD on file</i></span>
+      <span><b>DRP-4483</b> Hub One → Sunset Valley <i class="ok">Batched · 3 stops</i></span>
+      <span><b>DRP-4457</b> Del Valle → Riverside <i class="ok">Core returned</i></span>
+      <span><b>DRP-4472</b> Del Valle → Southpark Meadows <i class="ok">In transit</i></span>
+      <span><b>DRP-4468</b> Pflugerville → Wells Branch <i class="ok">Delivered 10:58 · inside window</i></span>
+      <span><b>DRP-4479</b> Tech Ridge → Round Rock <i class="amb">Hot · dispatched</i></span>
+      <span><b>DRP-4461</b> Downtown → Cedar Park <i class="ok">Delivered 10:41 · POD on file</i></span>
+      <span><b>DRP-4483</b> Hub One → Sunset Valley <i class="ok">Batched · 3 stops</i></span>
+      <span><b>DRP-4457</b> Del Valle → Riverside <i class="ok">Core returned</i></span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROBLEM ===== -->
+<section id="problem" class="flush">
+  <div class="wrap split reveal">
+    <div>
+      <span class="mono kicker">The problem</span>
+      <h2>Every distributor runs a delivery operation. None of them wants to.</h2>
+      <p class="lead" style="margin-top:18px">Your own vehicles, your own drivers, your own dispatcher on their own phone. It's a cost you absorb to protect a sale — not a business you chose to be in. And it's the most expensive department you never budgeted for.</p>
+      <div class="facts">
+        <div class="fact"><i>01</i><div><b>Fixed cost, variable demand.</b><p>You pay for eight hours of driver and van whether Tuesday brings 20 drops or 60.</p></div></div>
+        <div class="fact"><i>02</i><div><b>Nobody knows the real number.</b><p>Wages, overtime, insurance, fuel, repairs, dispatch time — spread over five budget lines, never added up per delivery.</p></div></div>
+        <div class="fact"><i>03</i><div><b>Nobody commits to a time.</b><p>Ask a distributor for a delivery guarantee and you won't get one. They can't make it, so they don't offer it — and the shop calls your counter instead.</p></div></div>
+      </div>
+    </div>
+    <div>
+      <div class="bill">
+        <span class="mono" style="display:block;margin-bottom:8px">What a typical in-house drop actually costs</span>
+        <div class="line"><span>Driver wages + payroll taxes</span><b>$9 – 13</b></div>
+        <div class="line"><span>Vehicle lease, insurance, fuel, repairs</span><b>$4 – 7</b></div>
+        <div class="line"><span>Dispatcher / counter time</span><b>$2 – 4</b></div>
+        <div class="line"><span>Idle time, callbacks, re-deliveries</span><b>$2 – 5</b></div>
+        <div class="total"><span>True cost per drop</span><b>$17 – 29</b></div>
+      </div>
+      <div class="fig">Fig. 02 — Illustrative range for a metro wholesale operation, modeled from field research. <a href="#calculator" style="color:var(--green)">Run your own numbers ↓</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section id="how">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="mono kicker">How it works</span>
+      <h2>Zero technical work on your end. Four steps, and you're not running delivery anymore.</h2>
+    </div>
+    <div class="steps reveal">
+      <div class="step"><div class="n">STEP 01</div><h3>You keep doing business as usual</h3><p>Phone, email, a spreadsheet, or a system like Epicor — whatever you already use to take orders today. Nothing changes for your counter.</p></div>
+      <div class="step"><div class="n">STEP 02</div><h3>We build the connection</h3><p>Our team sets up the link on our side. No software to install, no IT team required from you. Every order you take shows up with us automatically — no double entry, ever.</p></div>
+      <div class="step"><div class="n">STEP 03</div><h3>We group, route and deliver</h3><p>Our dispatch system holds each order just long enough to combine nearby drops, then re-plans the whole fleet as new orders land. Hot parts still leave now; everything else rides together.</p></div>
+      <div class="step"><div class="n">STEP 04</div><h3>You watch it happen</h3><p>A clean portal shows every order against its committed window, with photo proof. One monthly invoice: completed drops × your rate. That's the entire bill.</p></div>
+    </div>
+    <div class="bottom-line reveal"><b>Bottom line:</b> we handle 100% of the setup and 100% of the driving. You keep running your business exactly the way you do today — minus the fleet.</div>
+  </div>
+</section>
+
+<!-- ===== CUSTOMER EXPERIENCE ===== -->
+<section class="dark" id="experience">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="mono kicker green">What your customers get</span>
+      <h2 style="color:var(--cream)">Three things your shops almost certainly don't have today.</h2>
+    </div>
+    <div class="three reveal">
+      <div class="cell">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div>
+        <h3>A heads-up when it leaves</h3>
+        <p>The moment a driver is dispatched, the shop gets a message: part on the way, driver's name, estimated arrival.</p>
+      </div>
+      <div class="cell">
+        <div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+        <h3>A live arrival time they can plan around</h3>
+        <p>Not "sometime this afternoon." A live estimate that updates as the driver moves. The bay stays scheduled; the technician stays busy.</p>
+      </div>
+      <div class="cell">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
+        <h3>Photo proof, automatically</h3>
+        <p>Every completed stop is confirmed with a timestamped photo. Nobody calls to check whether it arrived — everyone already knows.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== INDUSTRIES ===== -->
+<section id="industries" class="flush">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="mono kicker">Who we deliver for</span>
+      <h2>Wherever a professional is stopped until the part arrives.</h2>
+      <p class="lead" style="margin-top:18px">Urgent, low-density, business-to-business. Different customer, identical problem — a repair bay, a plant floor, a job site or a clinic that can't work until your box shows up.</p>
+    </div>
+    <div class="verts reveal">
+      <div class="vert first"><span class="tag">Where we started</span><h3>Wholesale auto parts</h3><p>Hot-shot parts to repair shops and dealers, several runs a day, warranty cores coming back on the return leg.</p></div>
+      <div class="vert"><span class="tag"></span><h3>MRO &amp; industrial supply</h3><p>Bearings, belts, fittings and filters to plants where a line is down until the part shows up.</p></div>
+      <div class="vert"><span class="tag"></span><h3>Field service parts</h3><p>HVAC, appliance, elevator and equipment parts delivered to the technician on site — not back at the depot.</p></div>
+      <div class="vert"><span class="tag"></span><h3>Construction &amp; building supply</h3><p>Electrical, plumbing and hardware to active job sites. The crew keeps working; the day isn't lost.</p></div>
+      <div class="vert"><span class="tag"></span><h3>Medical &amp; lab supply</h3><p>Clinic, dental and lab deliveries with a time window and a documented chain of custody on every drop.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRICING ===== -->
+<section id="pricing">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="mono kicker">Pricing</span>
+      <h2>One number, per completed delivery. That is the entire invoice.</h2>
+      <p class="lead" style="margin-top:18px">Your rate is set when we sign, based on your delivery area, daily volume and what you ship. You pay only for completed drops — never for idle drivers, empty vans or software seats.</p>
+    </div>
+    <div class="price-grid reveal">
+      <div class="price">
+        <h3>Running it yourself</h3>
+        <p class="sub">What you pay today, whether or not a part ships.</p>
+        <div class="big" style="color:var(--muted)">Fixed</div>
+        <span class="unit">monthly cost, regardless of volume</span>
+        <ul class="not">
+          <li>Driver wages, overtime, payroll taxes and turnover</li>
+          <li>Vehicle leases, insurance, fuel, repairs, depreciation</li>
+          <li>A dispatcher — or a counter person doing two jobs</li>
+          <li>Status calls, re-deliveries, and no record of what happened</li>
+        </ul>
+      </div>
+      <div class="price hl">
+        <h3>With LMX</h3>
+        <p class="sub">A per-drop rate, quoted for your operation.</p>
+        <div class="big">Per drop</div>
+        <span class="unit">volume tiers and dedicated-route rates available</span>
+        <ul>
+          <li>Drivers, vehicles, insurance and dispatch — all included</li>
+          <li>Committed delivery windows, tracked on every order</li>
+          <li>Customer notifications, live ETA and photo proof included</li>
+          <li>One monthly invoice. No setup fee, no software fee, no seat licence</li>
+        </ul>
+        <a class="btn btn-green" href="#quote" style="margin-top:28px">Get your per-drop quote <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CALCULATOR ===== -->
+<section id="calculator" class="flush">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="mono kicker">True cost calculator</span>
+      <h2>Most distributors have never calculated their real cost per drop.</h2>
+      <p class="lead" style="margin-top:18px">Adjust the numbers to match your operation. It takes about a minute, and the answer usually surprises people.</p>
+    </div>
+    <div class="calc reveal">
+      <div class="calc-form">
+        <div class="grid2">
+          <div class="field"><label for="c-drivers">Delivery drivers</label><input id="c-drivers" type="number" min="1" max="50" value="3"></div>
+          <div class="field"><label for="c-wage">Driver hourly wage ($)</label><input id="c-wage" type="number" min="10" max="60" step="0.5" value="19"></div>
+          <div class="field"><label for="c-hours">Paid hours per driver per day</label><input id="c-hours" type="number" min="2" max="14" step="0.5" value="8"></div>
+          <div class="field"><label for="c-burden">Payroll taxes &amp; benefits (%)</label><input id="c-burden" type="number" min="0" max="60" value="20"><small>Employer taxes, workers' comp, benefits. 18–25% is typical.</small></div>
+          <div class="field"><label for="c-vehicles">Delivery vehicles</label><input id="c-vehicles" type="number" min="1" max="50" value="3"></div>
+          <div class="field"><label for="c-vehcost">All-in monthly cost per vehicle ($)</label><input id="c-vehcost" type="number" min="200" max="6000" step="50" value="1400"><small>Lease or depreciation + insurance + fuel + maintenance.</small></div>
+          <div class="field"><label for="c-dispatch">Dispatch / counter hours per day</label><input id="c-dispatch" type="number" min="0" max="16" step="0.5" value="4"><small>Time spent routing drivers and answering status calls.</small></div>
+          <div class="field"><label for="c-dispwage">Dispatcher hourly cost ($)</label><input id="c-dispwage" type="number" min="10" max="80" value="24"></div>
+        </div>
+        <div class="field">
+          <label for="c-drops">Deliveries per day: <span id="c-drops-out">45</span></label>
+          <input id="c-drops" type="range" min="10" max="300" step="5" value="45">
+          <small>Working days per month: <select id="c-days" style="width:auto;padding:3px 8px;display:inline-block"><option>20</option><option selected>22</option><option>24</option><option>26</option></select></small>
+        </div>
+      </div>
+      <div class="result">
+        <span class="mono" style="color:rgba(242,240,235,.55)">Your estimated in-house cost</span>
+        <div class="num" id="r-cpd">$—<small>per drop</small></div>
+        <p class="sub">That's <b id="r-month">$—</b> a month in delivery cost — before management time, damage, overtime, or a driver quitting.</p>
+        <div class="brk">
+          <div><span>Driver labor</span><b id="r-labor">—</b></div>
+          <div><span>Vehicles</span><b id="r-veh">—</b></div>
+          <div><span>Dispatch &amp; status calls</span><b id="r-disp">—</b></div>
+          <div><span>Drops per driver per hour</span><b id="r-dph">—</b></div>
+        </div>
+        <a class="btn btn-green" href="#quote">Compare with an LMX quote <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WHERE ===== -->
+<section id="where">
+  <div class="wrap mapwrap reveal">
+    <div>
+      <div class="map" role="img" aria-label="Map of the LMX Austin service area with Hub One and delivery clusters">
+        <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="300.0" cy="330.0" r="86.8" class="ring"/>
+<text x="367.4" y="264.6" class="ringlbl">5 mi</text>
+<circle cx="300.0" cy="330.0" r="173.6" class="ring"/>
+<text x="428.8" y="203.2" class="ringlbl">10 mi</text>
+<circle cx="300.0" cy="330.0" r="260.5" class="ring"/>
+<text x="490.2" y="141.8" class="ringlbl">15 mi</text>
+<circle cx="292.1" cy="277.4" r="9.6" class="drop"/>
+<circle cx="311.4" cy="256.6" r="7.4" class="drop"/>
+<circle cx="329.0" cy="292.8" r="7.4" class="drop"/>
+<circle cx="286.6" cy="238.9" r="7.4" class="drop"/>
+<circle cx="271.0" cy="308.4" r="5.2" class="drop"/>
+<circle cx="346.0" cy="269.4" r="5.2" class="drop"/>
+<circle cx="249.3" cy="376.7" r="9.6" class="drop"/>
+<circle cx="270.0" cy="392.3" r="7.4" class="drop"/>
+<circle cx="255.5" cy="357.5" r="7.4" class="drop"/>
+<circle cx="236.9" cy="409.0" r="7.4" class="drop"/>
+<circle cx="281.4" cy="370.7" r="5.2" class="drop"/>
+<circle cx="235.9" cy="343.1" r="5.2" class="drop"/>
+<circle cx="332.1" cy="433.6" r="9.6" class="drop"/>
+<circle cx="302.1" cy="452.2" r="7.4" class="drop"/>
+<circle cx="354.8" cy="416.2" r="7.4" class="drop"/>
+<circle cx="339.3" cy="471.3" r="5.2" class="drop"/>
+<circle cx="311.4" cy="401.8" r="5.2" class="drop"/>
+<circle cx="382.8" cy="151.4" r="7.4" class="drop"/>
+<circle cx="321.7" cy="129.9" r="5.2" class="drop"/>
+<circle cx="243.1" cy="176.6" r="5.2" class="drop"/>
+<circle cx="321.7" cy="68.8" r="5.2" class="drop"/>
+<circle cx="177.9" cy="92.7" r="5.2" class="drop"/>
+<circle cx="211.0" cy="518.1" r="5.2" class="drop"/>
+<circle cx="156.2" cy="556.4" r="5.2" class="drop"/>
+<circle cx="245.2" cy="36.4" r="5.2" class="drop"/>
+<circle cx="300.0" cy="330.0" r="14" class="hubring"/><circle cx="300.0" cy="330.0" r="7" class="hub"/>
+<text x="333.7" y="72.8" class="lbl">Round Rock</text>
+<text x="394.8" y="155.4" class="lbl">Pflugerville</text>
+<text x="187.9" y="76.4" class="lbl">Cedar Park</text>
+<text x="267.5" y="361.5" class="lbl">Downtown</text>
+<text x="353.4" y="453.8" class="lbl">Del Valle</text>
+<text x="198.2" y="417.8" class="lbl">Sunset Valley</text>
+<text x="312.0" y="334.0" class="hublbl">Hub One</text>
+        </svg>
+      </div>
+      <div class="fig">Fig. 03 — Austin service area. Hub One in amber; drop clusters in black, sized by volume. Radius rings at 5, 10 and 15 miles.</div>
+    </div>
+    <div>
+      <span class="mono kicker">Where we operate</span>
+      <h2>Austin first. Your metro next, if you bring the volume.</h2>
+      <p class="lead" style="margin-top:18px">We start where the conditions are strongest: dense rooftops, urgent parts, short radii. New hubs open on committed customer demand — a signed distributor is how a metro gets started.</p>
+      <div class="metros">
+        <div><span>Austin, TX</span><span class="st live">Onboarding now</span></div>
+        <div><span>Dallas–Fort Worth, TX</span><span class="st next">Evaluating</span></div>
+        <div><span>Houston, TX</span><span class="st next">Evaluating</span></div>
+        <div><span>Your metro</span><span class="st ask"><a href="#quote">Tell us →</a></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WHY LMX ===== -->
+<section id="why" class="flush">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="mono kicker">Why LMX</span>
+      <h2>We are not a platform for running your delivery better. We are the company that runs it.</h2>
+      <p class="lead" style="margin-top:18px">Software vendors sell you a tool and leave the driving to you. Gig apps give you a release valve and take away route memory, accountability and the relationship. LMX runs the whole operation and puts its name on the delivery time.</p>
+    </div>
+    <div class="why reveal">
+      <div class="step"><div class="n">01</div><h3>We own the promise</h3><p>Every delivery is measured against the window we committed to. You see the record; we answer for it — whichever vehicle carried the part.</p></div>
+      <div class="step"><div class="n">02</div><h3>Dense routes, not point-to-point</h3><p>By holding orders briefly to group nearby drops and re-planning as new ones arrive, our vehicles complete far more stops per hour than a typical in-house van. That efficiency is what makes a per-drop price work.</p></div>
+      <div class="step"><div class="n">03</div><h3>Ready for what's next</h3><p>Our system already plans across vehicle types. As autonomous vehicles become available in your metro and the economics work, the same system routes a drop to a machine. You're told how it's arriving; you never manage the vehicle.</p></div>
+    </div>
+    <div class="quotes reveal">
+      <blockquote>"The shops always want the parts 20 minutes ago at the cheapest price possible — but I'll never commit to a delivery time, because I can't."<footer>Wholesale distributor · field research, 2026</footer></blockquote>
+      <blockquote>"We run twelve dealerships and twelve dispatchers. We have rooftops three miles apart with their own driver fleets. My techs know it's broken."<footer>Dealer group operations lead · field research, 2026</footer></blockquote>
+    </div>
+    <div class="team reveal">
+      <span class="stamp" style="color:#f2f0eb"><svg class="wm"><use href="#wm"/></svg></span>
+      <p><b>Founded by three Amazon autonomous-logistics leaders</b> — from Prime Air drone operations, Amazon Robotics deployment and AWS AI. Operational discipline from people who ran delivery networks at scale, applied to an industry that has never had it. Primary research across New Jersey, Texas and California, January to July 2026.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section id="faq">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="mono kicker">Questions</span>
+      <h2>Straight answers.</h2>
+    </div>
+    <div class="faq reveal">
+      <details open>
+        <summary>What happens to my current drivers and vans?</summary>
+        <div class="a">That's your call, and we plan the transition with you. Many customers redeploy drivers to the counter or warehouse, return leased vehicles at renewal, and switch delivery to LMX zone by zone rather than overnight. We can run alongside your team while you wind down, and nothing moves until you've compared the numbers.</div>
+      </details>
+      <details>
+        <summary>How do you set my per-drop rate?</summary>
+        <div class="a">Three inputs: your delivery area (how far drops typically go), your daily volume, and what you ship (size, weight, handling). Denser, more predictable volume earns a lower rate; standing routes and committed programmes lower it further. The rate is fixed in your contract, so for the first time you can budget delivery as a cost per order.</div>
+      </details>
+      <details>
+        <summary>What does "committed delivery window" actually mean?</summary>
+        <div class="a">Each order is assigned a window based on its urgency — a hot-shot part to a shop with a car on the lift is not the same as stock replenishment. We track every drop against that window and report it back to you. Our contract sets out what happens when we miss one, so the commitment has teeth.</div>
+      </details>
+      <details>
+        <summary>Do I need new software? Will my team have to learn something?</summary>
+        <div class="a">No. We connect to the order or point-of-sale system you already use — Epicor today, others as we go — or accept a simple order feed. Your staff keep working the way they do now. The only new thing is a portal showing every delivery, and fewer phone calls.</div>
+      </details>
+      <details>
+        <summary>Can you handle returns and core exchanges?</summary>
+        <div class="a">Yes. Return legs — including warranty cores in the auto-parts world — are planned into the route, so the part that needs to come back does, on the same visit.</div>
+      </details>
+      <details>
+        <summary>Where do you operate?</summary>
+        <div class="a">We're onboarding customers in the Austin, Texas metro now and open new metros on customer demand. If you're elsewhere, tell us — a committed customer is how a new hub gets started.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT / QUOTE ===== -->
+<section class="contact" id="quote">
+  <div class="wrap split">
+    <div class="reveal">
+      <span class="mono kicker green">Talk to us</span>
+      <h2>Tell us about your deliveries. We'll come back with a per-drop number.</h2>
+      <p class="lead" style="margin-top:18px">A 20-minute call is usually enough to size your operation. No obligation, no sales deck — a number and a plan for the switch.</p>
+      <div class="contact-list">
+        <div><b>Email</b><a href="mailto:hello@lmxit.com">hello@lmxit.com</a></div>
+        <div><b>Phone</b><a href="tel:+15125550100">(512) 555-0100</a></div>
+        <div><b>Operating</b>Austin, TX — new metros by demand</div>
+      </div>
+    </div>
+    <form class="form reveal" id="quote-form" novalidate>
+      <div class="grid2">
+        <div class="field"><label for="f-name">Your name</label><input id="f-name" name="name" required autocomplete="name"></div>
+        <div class="field"><label for="f-company">Company</label><input id="f-company" name="company" required autocomplete="organization"></div>
+        <div class="field"><label for="f-email">Work email</label><input id="f-email" name="email" type="email" required autocomplete="email"></div>
+        <div class="field"><label for="f-phone">Phone (optional)</label><input id="f-phone" name="phone" type="tel" autocomplete="tel"></div>
+        <div class="field"><label for="f-industry">What you ship</label>
+          <select id="f-industry" name="industry">
+            <option>Wholesale auto parts</option><option>MRO / industrial supply</option><option>Field service parts</option><option>Construction / building supply</option><option>Medical / lab supply</option><option>Other B2B</option>
+          </select></div>
+        <div class="field"><label for="f-volume">Deliveries per day (approx.)</label>
+          <select id="f-volume" name="volume">
+            <option>Under 25</option><option>25 – 75</option><option>75 – 150</option><option>150 – 300</option><option>300+</option>
+          </select></div>
+      </div>
+      <div class="field"><label for="f-metro">Metro area</label><input id="f-metro" name="metro" placeholder="e.g., Austin, TX" required></div>
+      <div class="field"><label for="f-notes">Anything we should know?</label><textarea id="f-notes" name="notes" placeholder="Typical delivery radius, urgency mix, current setup…"></textarea></div>
+      <button class="btn btn-green" type="submit">Request my per-drop quote <span class="arrow">→</span></button>
+      <div class="success" id="form-ok">Thanks — your request is on its way. We'll reply within one business day.</div>
+      <p class="fine">We only use this to reply to you. No newsletters.</p>
+    </form>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="LMX"><span class="stamp" style="color:#f2f0eb"><svg class="wm"><use href="#wm"/></svg></span><span class="sub">Last mile. Re-built.</span></a>
+    <nav><a href="#how">How it works</a><a href="#pricing">Pricing</a><a href="#where">Where</a><a href="#quote">Contact</a><a href="terms.html">Client terms</a><a href="privacy.html">Privacy</a></nav>
+    <span>© <span id="year"></span> LMX · Austin, TX · lmxit.com</span>
+  </div>
+</footer>
+
+<script>
+/* =========================================================
+   CONFIG — the only things you should need to change
+   FORM_MODE: "mailto" (works anywhere, opens the visitor's email app)
+              "formspree" (set FORM_ENDPOINT; submissions land in your inbox)
+              "netlify" (if hosting on Netlify; forms captured automatically)
+   ========================================================= */
+const FORM_MODE     = "mailto";
+const FORM_EMAIL    = "hello@lmxit.com";
+const FORM_ENDPOINT = "https://formspree.io/f/YOUR_FORM_ID";
+
+document.getElementById('year').textContent = new Date().getFullYear();
+
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ---- True cost calculator ---- */
+const $ = id => document.getElementById(id);
+const money = n => '$' + Math.round(n).toLocaleString('en-US');
+function calc() {
+  const drivers = +$('c-drivers').value || 0, wage = +$('c-wage').value || 0, hours = +$('c-hours').value || 0;
+  const burden = 1 + (+$('c-burden').value || 0) / 100, vehicles = +$('c-vehicles').value || 0, vehCost = +$('c-vehcost').value || 0;
+  const dispH = +$('c-dispatch').value || 0, dispW = +$('c-dispwage').value || 0;
+  const drops = +$('c-drops').value || 1, days = +$('c-days').value || 22;
+  $('c-drops-out').textContent = drops;
+  const labor = drivers * wage * burden * hours * days, veh = vehicles * vehCost, disp = dispH * dispW * days;
+  const total = labor + veh + disp, cpd = total / (drops * days), dph = drops / Math.max(drivers * hours, 0.01);
+  $('r-cpd').innerHTML = '$' + cpd.toFixed(2) + '<small>per drop</small>';
+  $('r-month').textContent = money(total);
+  $('r-labor').textContent = money(labor) + ' / mo';
+  $('r-veh').textContent = money(veh) + ' / mo';
+  $('r-disp').textContent = money(disp) + ' / mo';
+  $('r-dph').textContent = dph.toFixed(2);
+  window.__lmxCpd = cpd.toFixed(2);
+}
+['c-drivers','c-wage','c-hours','c-burden','c-vehicles','c-vehcost','c-dispatch','c-dispwage','c-drops','c-days'].forEach(id => $(id).addEventListener('input', calc));
+calc();
+
+/* ---- Quote form ---- */
+const form = $('quote-form');
+if (FORM_MODE === 'netlify') { form.setAttribute('data-netlify', 'true'); form.setAttribute('name', 'quote'); form.setAttribute('method', 'POST'); }
+form.addEventListener('submit', async e => {
+  if (FORM_MODE === 'netlify') return;
+  e.preventDefault();
+  if (!form.reportValidity()) return;
+  const d = Object.fromEntries(new FormData(form).entries());
+  const cpd = window.__lmxCpd ? `\nCalculator estimate: $${window.__lmxCpd} per drop (in-house)` : '';
+  const body = `Name: ${d.name}\nCompany: ${d.company}\nEmail: ${d.email}\nPhone: ${d.phone||'-'}\nShips: ${d.industry}\nDeliveries/day: ${d.volume}\nMetro: ${d.metro}\nNotes: ${d.notes||'-'}${cpd}`;
+  if (FORM_MODE === 'formspree') {
+    try {
+      const r = await fetch(FORM_ENDPOINT, { method: 'POST', headers: { 'Accept': 'application/json' }, body: new FormData(form) });
+      if (!r.ok) throw new Error();
+      form.reset(); $('form-ok').style.display = 'block'; return;
+    } catch { /* fall through to mailto */ }
+  }
+  window.location.href = `mailto:${FORM_EMAIL}?subject=${encodeURIComponent('Per-drop quote request — ' + d.company)}&body=${encodeURIComponent(body)}`;
+  $('form-ok').textContent = 'Your email app should have opened with the request. If not, email us at ' + FORM_EMAIL + '.';
+  $('form-ok').style.display = 'block';
+});
+</script>
 </body>
 </html>
